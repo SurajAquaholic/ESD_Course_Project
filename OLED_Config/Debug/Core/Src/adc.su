@@ -1,0 +1,6 @@
+core_cm4.h:1688:22:__NVIC_EnableIRQ	16	static
+core_cm4.h:1816:22:__NVIC_SetPriority	16	static
+adc.c:24:6:adc_init	8	static
+adc.c:40:6:ADC_IRQHandler	4	static
+adc.c:50:6:calculate_temperature	16	static
+adc.c:175:5:get_temp	4	static

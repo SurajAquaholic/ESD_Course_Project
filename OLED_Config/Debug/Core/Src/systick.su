@@ -1,0 +1,8 @@
+core_cm4.h:1816:22:__NVIC_SetPriority	16	static
+systick.c:27:6:Init_Systick	8	static
+systick.c:44:6:SysTick_Handler	4	static
+systick.c:61:6:Delay	16	static
+systick.c:71:5:get_timeout_flag	4	static
+systick.c:75:5:getter_msec_since_startup	4	static
+systick.c:80:6:Start_Systick_Count	4	static
+systick.c:84:5:get_Systick_Count	4	static

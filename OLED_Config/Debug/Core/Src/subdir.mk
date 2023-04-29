@@ -5,8 +5,11 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/adc.c \
 ../Core/Src/fonts.c \
+../Core/Src/ir_sensor.c \
 ../Core/Src/main.c \
+../Core/Src/oled_ops.c \
 ../Core/Src/rtc.c \
 ../Core/Src/ssd1306.c \
 ../Core/Src/stm32f4xx_hal_msp.c \
@@ -14,11 +17,15 @@ C_SRCS += \
 ../Core/Src/syscalls.c \
 ../Core/Src/sysmem.c \
 ../Core/Src/system_stm32f4xx.c \
+../Core/Src/systick.c \
 ../Core/Src/test.c 
 
 OBJS += \
+./Core/Src/adc.o \
 ./Core/Src/fonts.o \
+./Core/Src/ir_sensor.o \
 ./Core/Src/main.o \
+./Core/Src/oled_ops.o \
 ./Core/Src/rtc.o \
 ./Core/Src/ssd1306.o \
 ./Core/Src/stm32f4xx_hal_msp.o \
@@ -26,11 +33,15 @@ OBJS += \
 ./Core/Src/syscalls.o \
 ./Core/Src/sysmem.o \
 ./Core/Src/system_stm32f4xx.o \
+./Core/Src/systick.o \
 ./Core/Src/test.o 
 
 C_DEPS += \
+./Core/Src/adc.d \
 ./Core/Src/fonts.d \
+./Core/Src/ir_sensor.d \
 ./Core/Src/main.d \
+./Core/Src/oled_ops.d \
 ./Core/Src/rtc.d \
 ./Core/Src/ssd1306.d \
 ./Core/Src/stm32f4xx_hal_msp.d \
@@ -38,6 +49,7 @@ C_DEPS += \
 ./Core/Src/syscalls.d \
 ./Core/Src/sysmem.d \
 ./Core/Src/system_stm32f4xx.d \
+./Core/Src/systick.d \
 ./Core/Src/test.d 
 
 

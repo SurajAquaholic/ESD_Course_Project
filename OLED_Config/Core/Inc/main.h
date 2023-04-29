@@ -32,7 +32,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#define MASK(x,y)  x<<y
+#define ENABLE_ 1
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

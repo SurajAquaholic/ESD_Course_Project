@@ -25,8 +25,12 @@
 #include "fonts.h"
 #include "ssd1306.h"
 #include "test.h"
-#include "bitmap.h"
 #include "rtc.h"
+#include "adc.h"
+#include "ir_sensor.h"
+#include "oled_ops.h"
+#include "systick.h"
+#include "stdbool.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,73 +97,17 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-
+  SystemClock_Config();
   SSD1306_Init();
-
+  //Init_Systick();
+  ir_init();
+  rtc_init();
+  adc_init();
 //  SSD1306_GotoXY (0,0);
-//  SSD1306_Puts ("ESD Course project", &Font_11x18, 1);
-//  SSD1306_GotoXY (10, 30);
-//  SSD1306_Puts ("Automotive Alert System", &Font_11x18, 1);
-//  SSD1306_UpdateScreen(); //display
-//  HAL_Delay (2000);
-
-  SSD1306_DrawBitmap(0,0,Left_Alert, 128, 64, 1);
-  SSD1306_UpdateScreen();
-
-  HAL_Delay(2000);
-
+//  SSD1306_Puts ("ESD Course project", &Font_7x10, 1);
+//  Delay(2000);
   SSD1306_Clear();
 
-  SSD1306_DrawBitmap(0,0,Both_Side_Alert, 128, 64, 1);
-  SSD1306_UpdateScreen();
-//
-  HAL_Delay(2000);
-
-  SSD1306_Clear();
-
-  SSD1306_DrawBitmap(0,0,Right_Alert, 128, 64, 1);
-  SSD1306_UpdateScreen();
-
-  HAL_Delay(2000);
-
-  SSD1306_Clear();
-//
-//  SSD1306_InvertDisplay(1);   // invert the display
-//
-//  HAL_Delay(2000);
-//
-//  SSD1306_InvertDisplay(0);   // normalize the display
-//
-//  HAL_Delay(2000);
-  SSD1306_UpdateScreen();
-//
-  RTC_TimeTypeDef Time;
-  //RTC_DateTypeDef sDate;
-  uint8_t ten_sec_count=0, ten_min_count=0;//, ten_hour_count =0;
-  Time.Seconds 	= 0;
-  Time.Minutes 	= 0;
-  Time.Hours 	= 0;
-
-
-   char Time_Arr[5] = {'0','0',':','0','0'};
-   char Date_Arr[10] = {'M','M','/','D','D','/','Y','Y',' ',' '};
-
-   SSD1306_GotoXY (20,0);
-   SSD1306_Puts (Date_Arr, &Font_11x18, 1);
-   SSD1306_GotoXY (20, 30);
-   SSD1306_Puts (Time_Arr, &Font_16x26, 1);
-   SSD1306_UpdateScreen(); //display
-   HAL_Delay (2000);
-
-   SSD1306_Clear();
-
-   char Temp[6] = {'2','4','C',' ',' '};
-   SSD1306_GotoXY (40, 30);
-   SSD1306_Puts (Temp, &Font_16x26, 1);
-   SSD1306_UpdateScreen(); //display
-
-   Time = RTC_get_time();
-   //sDate = RTC_get_date();
 
   /* USER CODE END 2 */
 
@@ -167,49 +115,18 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
     /* USER CODE END WHILE */
+	  //Start_Systick_Count();
+	  check_ir_sensor();
+	  RTC_calculate_date();
+	  RTC_calculate_time();
+	  calculate_temperature();
+	  if(!(return_left_status() || return_right_status() || return_both_status()))
+	  {
+		  Time_Update();
+	  }
 
-//	  if(Time.Seconds == 9){
-//		  ten_sec_count++;
-//		  //sTime.Seconds = 0;
-//		  if(ten_sec_count == 6){
-//			  ten_sec_count = 0;
-//			  //sTime.Minutes++;
-//			  if(Time.Minutes == 10){
-//				  ten_min_count++;
-//				  //sTime.Minutes = 0;
-//				  if(ten_min_count == 6){
-//					  //sTime.Hours++;
-//					  ten_min_count = 0;
-//					  if(Time.Hours == 10){
-//						  ten_hour_count++;
-//						  //sTime.Hours = 0;
-//						  if(ten_hour_count == 2 && Time.Hours == 4){
-//							  //sTime.Hours = 0;
-//							  ten_hour_count = 0;
-//							  //sDate.Day++;
-//							  if(sDate.Day == 31){
-//								  //sDate.Day = 0;
-//								  //sDate.Month++;
-//							  }
-//						  }
-//					  }
-//				  }
-//			  }
-//		  }
-//	  }
-//	  else
-//		  //sTime.Seconds++;
-
-	  Time_Arr[1] = Time.Hours + 48;
-	  Time_Arr[3] = ten_min_count + 48;
-	  Time_Arr[4] = Time.Minutes + 48;
-	  Time_Arr[6] = ten_sec_count + 48;
-	  Time_Arr[7] = Time.Seconds + 48;
-
-	  SSD1306_GotoXY (0,0);
-	  SSD1306_Puts (Time_Arr, &Font_11x18, 1);
-	  SSD1306_UpdateScreen();
 
     /* USER CODE BEGIN 3 */
   }
@@ -351,10 +268,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(PDM_OUT_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
-  GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+//  GPIO_InitStruct.Pin = GPIO_PIN_0;
+//  GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
+//  GPIO_InitStruct.Pull = GPIO_NOPULL;
+//  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : I2S3_WS_Pin */
   GPIO_InitStruct.Pin = I2S3_WS_Pin;
