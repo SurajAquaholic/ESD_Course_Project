@@ -128,3 +128,5 @@ void Time_Update(void){
 		SSD1306_UpdateScreen();
 		ADC1->CR2 |= MASK(ENABLE_, START_CONVERSION); //Start the next conversion
 }
+
+
