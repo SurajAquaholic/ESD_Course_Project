@@ -384,6 +384,7 @@ void check_ir_sensor()
 	}
 }
 
+
 bool return_right_status()
 {
 	return vehicle_rightside;

@@ -1,0 +1,5 @@
+ir_sensor.c:288:6:ir_init	4	static
+ir_sensor.c:301:6:check_ir_sensor	16	static
+ir_sensor.c:388:6:return_right_status	4	static
+ir_sensor.c:393:6:return_left_status	4	static
+ir_sensor.c:398:6:return_both_status	4	static
