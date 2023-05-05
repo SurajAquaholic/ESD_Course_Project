@@ -99,7 +99,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   SystemClock_Config();
   SSD1306_Init();
-  //Init_Systick();
+  Init_Systick();
   ir_init();
   rtc_init();
   adc_init();
@@ -117,8 +117,8 @@ int main(void)
   {
 
     /* USER CODE END WHILE */
-	  //Start_Systick_Count();
 	  check_ir_sensor();
+	  //get_Systick_Count();
 	  RTC_calculate_date();
 	  RTC_calculate_time();
 	  calculate_temperature();

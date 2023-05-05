@@ -1,3 +1,7 @@
+/***********************************************************
+ --------------------------INCLUDES-------------------------
+ ***********************************************************/
+
 #include "ir_sensor.h"
 
 //pa 7 and pa10
@@ -284,33 +288,47 @@ static unsigned char Right_Alert_NEW [] = {
 //	}
 //}
 
-
+/*
+ * @name ir_init
+ *
+ * @brief Initializes GPIO pins as input for PA7 and PA6
+ *
+ * @param none
+ *
+ * @return none
+ *
+ */
 void ir_init()
 {
 	RCC->AHB1ENR |= MASK(ENABLE_, GPIOA_EN); //Enable the Clock for GPIO A
 	GPIOA->MODER &= ~(MASK(INPUT_MODE, PA7_MODER)); //Set the mode to GPIO Input for PA7
 	GPIOA->PUPDR |= MASK(ENABLE_, PUPD_PA7); //Configure a Pull down resistor to PA7
-	GPIOA->MODER &= ~(MASK(INPUT_MODE, PA6_MODER)); //Set the mode to GPIO Input for PA6
-	GPIOA->PUPDR |= MASK(ENABLE_, PUPD_PA6); //Configure a Pull down resistor to PA6
+	GPIOA->MODER &= ~(MASK(INPUT_MODE, 4)); //Set the mode to GPIO Input for PA6
+	GPIOA->PUPDR |= MASK(ENABLE_, 5); //Configure a Pull down resistor to PA6 ..2
 	GPIOA->MODER &= ~(MASK(INPUT_MODE, PA5)); //Set the mode to GPIO Input for PA7
 	GPIOA->MODER |= MASK(ENABLE_, PA5); //Set output mode to GPIO5 for buzzer
 	GPIOA->OTYPER &= ~MASK(ENABLE_, PA5_SET); //output type register push - pull
 	GPIOA->PUPDR |= MASK(ENABLE_, PA5); // pull up for buzzer
 }
-
+/*
+ * check_ir_sensor
+ */
 void check_ir_sensor()
 {
-	if(GPIOA->IDR & MASK(ENABLE_, PA7) && (!(GPIOA->IDR & MASK(ENABLE_, PA6))))
+	// Check to detect if vehicle is detected only on the left side.
+	if(GPIOA->IDR & MASK(ENABLE_, PA7) && (!(GPIOA->IDR & MASK(ENABLE_, 2))))
 	{
-		vehicle_leftside = true;
-		GPIOA->BSRR |= MASK(ENABLE_, PA5_SET); //Set the buzzer
-		if(clear_count_left)
+		Start_Systick_Count();					// Systick starts counting
+		vehicle_leftside = true;				// set flag to true
+		GPIOA->BSRR |= MASK(ENABLE_, PA5_SET); 	// Set the buzzer
+		if(clear_count_left)	 				//Once the clear count is enabled
 		{
 			SSD1306_Clear();
 			clear_count_left = 0;
 		}
 		SSD1306_DrawBitmap(0,0,Left_Alert_NEW, 128, 64, 1);
 		SSD1306_UpdateScreen();
+		get_Systick_Count();
 		counter = 1;
 	}
 	else
@@ -318,23 +336,26 @@ void check_ir_sensor()
 		vehicle_leftside = false;
 		if(!vehicle_rightside && counter)
 		{
-			GPIOA->BSRR |= MASK(ENABLE_, PA5_CLEAR); //Clear the buzzer
+			GPIOA->BSRR |= MASK(ENABLE_, PA5_CLEAR); // Clear the buzzer
 			SSD1306_Clear();
 			counter = 0;
-			clear_count_left = 1;
+			clear_count_left = 1;					 //
 		}
 	}
-	if(GPIOA->IDR & MASK(ENABLE_, PA6) && (!(GPIOA->IDR & MASK(ENABLE_, PA7))))
+	// Check to detect if vehicle is detected only on the right side.
+	if(GPIOA->IDR & MASK(ENABLE_, 2) && (!(GPIOA->IDR & MASK(ENABLE_, PA7))))
 	{
-		vehicle_rightside = true;
-		GPIOA->BSRR |= MASK(ENABLE_, PA5_SET); //Set the buzzer
+		Start_Systick_Count();
+		vehicle_rightside = true;				// set flag to true
+		GPIOA->BSRR |= MASK(ENABLE_, PA5_SET); 	// Set the buzzer
 		if(clear_count_right)
 		{
-			SSD1306_Clear();
-			clear_count_right = 0;
+			SSD1306_Clear();					// Clear the screen
+			clear_count_right = 0;				//
 		}
 		SSD1306_DrawBitmap(0,0,Right_Alert_NEW, 128, 64, 1);
 		SSD1306_UpdateScreen();
+		get_Systick_Count();
 		counter = 1;
 	}
 	else
@@ -342,38 +363,25 @@ void check_ir_sensor()
 		vehicle_rightside = false;
 		if(!vehicle_leftside && counter)
 		{
-			GPIOA->BSRR |= MASK(ENABLE_, PA5_CLEAR); //Clear the buzzer
+			GPIOA->BSRR |= MASK(ENABLE_, PA5_CLEAR); // Clear the buzzer
 			SSD1306_Clear();
 			counter = 0;
 			clear_count_right = 1;
 		}
 	}
-	if(GPIOA->IDR & MASK(ENABLE_, PA7) && GPIOA->IDR & MASK(ENABLE_, PA6))
+	// Check to detect if vehicle is detected on both sides.
+	if(GPIOA->IDR & MASK(ENABLE_, PA7) && GPIOA->IDR & MASK(ENABLE_, 2))
 	{
-//		if(clear_count_both)
-//		{
-//			//SSD1306_Clear();
-//			clear_count_both = 0;
-//		}
+		Start_Systick_Count();
 		GPIOA->BSRR |= MASK(ENABLE_, PA5_SET); //Set the buzzer
 		SSD1306_DrawBitmap(0,0,Both_Side_Alert_NEW, 128, 64, 1);
 		SSD1306_UpdateScreen();
-		vechile_bothside = true;
+		get_Systick_Count();
+		vechile_bothside = true;						// set flag to true
 		clear_count_both = 1;
 	}
-//	else if((!(vehicle_leftside)) && (vehicle_rightside))
-//	{
-//		clear_count_both = 1;
-//		clear_count_right = 1;
-//	}
-//	else if((!(vehicle_rightside)) && (vehicle_leftside))
-//	{
-//		clear_count_both = 1;
-//		clear_count_left = 1;
-//	}
-	else if((!(GPIOA->IDR & MASK(ENABLE_, PA7))) && (!(GPIOA->IDR & MASK(ENABLE_, PA6))))
+	else
 	{
-		//clear_count_both = 1;
 		vechile_bothside = false;
 		GPIOA->BSRR |= MASK(ENABLE_, PA5_CLEAR); //Clear the buzzer
 		if(clear_count_both)
@@ -383,7 +391,11 @@ void check_ir_sensor()
 		}
 	}
 }
-
+/*
+ * @name return_side_status()
+ *
+ * @brief Getter functions for the status of each of the flags
+ */
 bool return_right_status()
 {
 	return vehicle_rightside;

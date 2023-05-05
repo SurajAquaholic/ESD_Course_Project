@@ -1,8 +1,8 @@
-rtc.c:39:6:rtc_init	4	static
-rtc.c:69:6:RTC_calculate_time	16	static
-rtc.c:80:6:RTC_calculate_date	4	static
-rtc.c:90:9:get_minutes	4	static
-rtc.c:95:9:get_hours	4	static
-rtc.c:100:9:get_year	4	static
-rtc.c:105:9:get_month	4	static
-rtc.c:110:9:get_day	4	static
+rtc.c:42:6:rtc_init	4	static
+rtc.c:72:6:RTC_calculate_time	16	static
+rtc.c:83:6:RTC_calculate_date	4	static
+rtc.c:93:9:get_minutes	4	static
+rtc.c:98:9:get_hours	4	static
+rtc.c:103:9:get_year	4	static
+rtc.c:108:9:get_month	4	static
+rtc.c:113:9:get_day	4	static

@@ -15,16 +15,21 @@
 
 
 /**********Current Date Time Settings**********************/
-#define DATE_ONES	 	0b0000
+#define DATE_ONES	 	0b0001
 #define DATE_ONES_POS	0
-#define DATE_TENS		0b11
+#define DATE_TENS		0b00
 #define DATE_TENS_POS	4
-#define MONTH_ONES		0b0100
+#define MONTH_ONES		0b0101
 #define MONTH_ONES_POS	8
 #define YEAR_ONES		0b0011
 #define YEAR_ONES_POS	16
 #define YEARS_TENS		0b0010
 #define YEARS_TENS_POS	20
+
+/**********Current Time Settings****************************/
+#define MINUTES_TENS	0b100
+#define HOURS_ONES  	0b111
+#define HOURS_TENS		0b01
 
 #define CLEAR_MASK	0xFFFFFFFF
 
@@ -52,9 +57,9 @@ void rtc_init()
 	RTC->PRER |= PREDIV_A<<16;
 	//Set the TR and DR registers for date and time
 	RTC->TR &= ~(CLEAR_MASK);
-	RTC->TR |= (0b100 << 12); //minutes msb is 4
-	RTC->TR |= (0b111 << 16); //hours lsb is 7
-	RTC->TR |= (0b01 << 20); //hours msb is 1 i.e. 17.40.0
+	RTC->TR |= (MINUTES_TENS << 12); //minutes msb is 4
+	RTC->TR |= (HOURS_ONES << 16); //hours lsb is 7
+	RTC->TR |= (HOURS_TENS << 20); //hours msb is 1 i.e. 17.40.0
 	RTC->DR &= ~(CLEAR_MASK);
 	RTC->DR |= MASK(DATE_ONES,DATE_ONES_POS); //date ones is 0
 	RTC->DR |= MASK(DATE_TENS,DATE_TENS_POS); //date tens is 3

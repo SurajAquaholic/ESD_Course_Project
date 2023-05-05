@@ -4,6 +4,7 @@
 #include "main.h"
 #include "ssd1306.h"
 #include "stdbool.h"
+#include "timer.h"
 //#include "bitmap.h"
 
 

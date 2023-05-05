@@ -17,8 +17,7 @@ C_SRCS += \
 ../Core/Src/syscalls.c \
 ../Core/Src/sysmem.c \
 ../Core/Src/system_stm32f4xx.c \
-../Core/Src/systick.c \
-../Core/Src/test.c 
+../Core/Src/systick.c 
 
 OBJS += \
 ./Core/Src/adc.o \
@@ -33,8 +32,7 @@ OBJS += \
 ./Core/Src/syscalls.o \
 ./Core/Src/sysmem.o \
 ./Core/Src/system_stm32f4xx.o \
-./Core/Src/systick.o \
-./Core/Src/test.o 
+./Core/Src/systick.o 
 
 C_DEPS += \
 ./Core/Src/adc.d \
@@ -49,8 +47,7 @@ C_DEPS += \
 ./Core/Src/syscalls.d \
 ./Core/Src/sysmem.d \
 ./Core/Src/system_stm32f4xx.d \
-./Core/Src/systick.d \
-./Core/Src/test.d 
+./Core/Src/systick.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

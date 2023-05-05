@@ -47,8 +47,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
  ../Core/Inc/fonts.h ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h \
  ../Core/Inc/rtc.h ../Core/Inc/main.h ../Core/Inc/adc.h \
- ../Core/Inc/ir_sensor.h ../Core/Inc/ssd1306.h ../Core/Inc/oled_ops.h \
- ../Core/Inc/rtc.h ../Core/Inc/adc.h
+ ../Core/Inc/ir_sensor.h ../Core/Inc/ssd1306.h ../Core/Inc/timer.h \
+ ../Core/Inc/oled_ops.h ../Core/Inc/rtc.h ../Core/Inc/adc.h \
+ ../Core/Inc/timer.h
 
 ../Core/Inc/main.h:
 
@@ -160,8 +161,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Core/Inc/ssd1306.h:
 
+../Core/Inc/timer.h:
+
 ../Core/Inc/oled_ops.h:
 
 ../Core/Inc/rtc.h:
 
 ../Core/Inc/adc.h:
+
+../Core/Inc/timer.h:

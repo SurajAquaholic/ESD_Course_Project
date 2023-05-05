@@ -30,6 +30,7 @@
 #include "ir_sensor.h"
 #include "oled_ops.h"
 #include "stdbool.h"
+#include "timer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -313,7 +314,11 @@ int main(void) {
 	ir_init();
 	rtc_init();
 	adc_init();
+	BM_TIM2_Init();
 	SSD1306_Clear();
+	//Start_Timer();
+	//HAL_Delay(1000);
+	//get_timer_Count();
 	/* USER CODE END 2 */
 
 	/* USER CODE BEGIN RTOS_MUTEX */
@@ -477,7 +482,7 @@ void Sense_IR_Entry(void const *argument) {
 	/* Infinite loop */
 	for (;;) {
 		check_ir_sensor();
-		osDelay(100); //100
+		osDelay(100);
 	}
 	/* USER CODE END Sense_IR_Entry */
 }
@@ -501,6 +506,7 @@ void display_oled_enter(void const *argument) {
 			GPIOA->BSRR |= MASK(ENABLE_, PA5_SET); //Set the buzzer
 			SSD1306_DrawBitmap(0, 0, Left_Alert_NEW, 128, 64, 1);
 			SSD1306_UpdateScreen();
+			get_timer_Count();						//GETTING THE TIMER COUNT
 			clear_oled_right = true;
 			clear_oled_both = true;
 			clear_oled_default = true;
@@ -512,6 +518,7 @@ void display_oled_enter(void const *argument) {
 			GPIOA->BSRR |= MASK(ENABLE_, PA5_SET); //Set the buzzer
 			SSD1306_DrawBitmap(0, 0, Right_Alert_NEW, 128, 64, 1);
 			SSD1306_UpdateScreen();
+			get_timer_Count();
 			clear_oled_left = true;
 			clear_oled_default = true;
 			clear_oled_both = true;
@@ -523,6 +530,7 @@ void display_oled_enter(void const *argument) {
 			GPIOA->BSRR |= MASK(ENABLE_, PA5_SET); //Set the buzzer
 			SSD1306_DrawBitmap(0, 0, Both_Side_Alert_NEW, 128, 64, 1);
 			SSD1306_UpdateScreen();
+			get_timer_Count();
 			clear_oled_left = true;
 			clear_oled_right = true;
 			clear_oled_default = true;
