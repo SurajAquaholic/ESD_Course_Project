@@ -1,0 +1,5 @@
+core_cm4.h:1688:22:__NVIC_EnableIRQ	16	static
+timer.c:28:6:BM_TIM2_Init	8	static
+timer.c:56:6:TIM2_IRQHandler	4	static
+timer.c:63:6:Start_Timer	4	static
+timer.c:74:5:get_timer_Count	4	static
