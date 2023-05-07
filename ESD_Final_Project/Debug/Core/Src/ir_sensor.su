@@ -1,2 +1,0 @@
-../Core/Src/ir_sensor.c:22:6:ir_init	4	static
-../Core/Src/ir_sensor.c:34:6:check_ir_sensor	4	static

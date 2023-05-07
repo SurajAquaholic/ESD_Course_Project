@@ -1,9 +1,0 @@
-../Core/Src/rtc.c:22:6:rtc_init	4	static
-../Core/Src/rtc.c:51:6:RTC_calculate_time	16	static
-../Core/Src/rtc.c:62:6:RTC_calculate_date	4	static
-../Core/Src/rtc.c:69:9:get_seconds	4	static
-../Core/Src/rtc.c:74:9:get_minutes	4	static
-../Core/Src/rtc.c:79:9:get_hours	4	static
-../Core/Src/rtc.c:84:9:get_year	4	static
-../Core/Src/rtc.c:89:9:get_month	4	static
-../Core/Src/rtc.c:94:9:get_day	4	static
